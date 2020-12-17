@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { Card } from \"semantic-ui-react\";","map":{"version":3,"sources":["/Users/renanyudi/Sites/estudos/react-app/react-next/components/Index/ProductList.js"],"names":["Card"],"mappings":"AAAA,SAASA,IAAT,QAAoB,mBAApB","sourcesContent":["import { Card }from \"semantic-ui-react\";"]},"metadata":{},"sourceType":"module"}

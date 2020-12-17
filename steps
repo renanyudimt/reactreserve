@@ -1,0 +1,18 @@
+1 - criar um app no next
+2 - instalar as dependencias
+npm i axios bcrypt js-cookie jsonwebtoken mongoose next nookies nprogress react-stripe-checkout shortid stripe uuid validator semantic-ui-react
+
+banco: renanyudi dlNOe1g6caj42oPo
+mongodb+srv://renanyudi:<password>@cluster0.aq1np.mongodb.net/<dbname>?retryWrites=true&w=majority
+
+Sobre jsonwebtoken
+primeiro, se faz um sign passando como parametro um objeto json, que sao as credenciais que irei encriptar, segundo e a chave de autorizacao que esta nos arquivos env e por ulitmo
+
+protocolo HTTP:
+https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+
+nextjs
+tailwindcss
+framer motion
+
+//combinho bao
