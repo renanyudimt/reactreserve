@@ -6,13 +6,16 @@ function AccountOrders({orders}) {
 
   function mapOrdersToPanels(orders) {
     console.log(orders)
+
     return orders.map(order=> ({
-      key: order.id,
+      key: order._id,
       title: {
-        content: <Label color="blue" content={order.createAt} />
+        content: <Label color="blue" content={order.createdAt} />
       },
-      content: (<>
-        <List.Header as="h3">
+      content: {
+        content: (
+        <>
+          <List.Header as="h3">
           Total: ${order.total}
           <Label 
             content={order.email} 
@@ -21,15 +24,15 @@ function AccountOrders({orders}) {
             horizontal
             style={{marginLeft: '1rem'}}  
           />
-        </List.Header>
-        <List>
-          {order.products.map(item => {
+          </List.Header>
+          <List>
+          {order.products.map(item => (
             <List.Item>
-              <Image avatar src={item.mediaUrl} />
+              <Image avatar src={item.product.mediaUrl} />
               <List.Content>
                 <List.Header>{item.name}</List.Header>
                 <List.Description>
-                  {item.quantity} . ${item.product.price}
+                  {item.product.quantity} . ${item.product.price}
                 </List.Description>
               </List.Content> 
               <List.Content floated="right">
@@ -38,9 +41,11 @@ function AccountOrders({orders}) {
                 </Label>
               </List.Content>
             </List.Item>
-          })}
+          ))}
         </List>
-      </>)
+        </>
+        )
+      }
     }))
   }
 
