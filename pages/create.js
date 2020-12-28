@@ -57,7 +57,7 @@ function CreateProduct() {
       setError(""); //pra nao deixar ela la pra sempre caso de um erro ne..
       const url = `${baseUrl}/api/product`
       const payload = {
-        name: "",
+        name: product.name,
         price: product.price,
         description: product.description,
         mediaUrl: product.mediaUrl

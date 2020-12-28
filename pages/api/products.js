@@ -14,10 +14,10 @@ export default async (req, res) => {
   const totalPages = Math.ceil(totalDocs / pageSize)
   try {
     if (pageNum == 1) {
-      products = await Product.find().limit(pageSize)
+      products = await Product.find().limit(pageSize).sort({ name: "asc" })
     } else {
       const skips = pageSize * (pageNum - 1)
-      products = await Product.find().skip(skips).limit(pageSize)
+      products = await Product.find().skip(skips).limit(pageSize).sort({ name: "asc" })
     }
 
     if (res.statusCode == 200) {

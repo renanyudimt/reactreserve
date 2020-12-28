@@ -1,5 +1,9 @@
 import Product from "../../models/Product";
+import Cart from "../../models/Product";
 import connectDb from "../../utils/connectDb";
+import mongoose from "mongoose"
+
+const { ObjectId } = mongoose.Schema.Types;
 
 connectDb(); 
 
@@ -14,9 +18,6 @@ export default async(req, res) => {
     case "DELETE":
       await handleDeleteRequest(req, res);
       break;
-    case "PUT":
-      await handlePutRequest(req, res);
-      break;
     default:
       res.status(405).send(`Method ${req.method} not allowed`);
       break;
@@ -28,7 +29,7 @@ async function handleGetRequest(req, res) {
   if (res.status(200)) {
     res.json({ success: true, product: product });
   } else {
-    res.json({ success: false, msg: "Product loading error", code: res.statusCode });
+    res.status(422).send("Product loading error");
   }
 }
 
@@ -36,7 +37,7 @@ async function handlePostRequest(req, res) {
   try {
     const { name, price, description, mediaUrl } = req.body
     if (!name || !price || !description || !mediaUrl) {
-      return res.status(422).json({ success: false, msg: "Product missing one or more fields" });
+      return res.status(422).send("Product missing one or more fields");
     }
   
     await new Product({
@@ -47,9 +48,9 @@ async function handlePostRequest(req, res) {
     }).save()
 
     if (res.statusCode == 200) {
-      res.send(201).json({ success: true })
+      res.status(201).json({ success: true })
     } else {
-      res.send(res.statusCode).json({ success: false, err_code: res.statusCode })
+      res.status(res.statusCode).json({ success: false, err_code: res.statusCode })
     }
     
   } catch(error) {
@@ -59,12 +60,21 @@ async function handlePostRequest(req, res) {
 } 
 
 async function handleDeleteRequest(req, res) {
-  await Product.findOneAndDelete({ _id: req.query.id });
-  if (res.status(204)) {
-    res.json({})
+  const _id = req.query.id
+
+  try {
+    //1) Delete product from ID
+    await Product.findOneAndDelete({ _id });
+    //2) Delete from all cart, referenced as 'product' (se eu nao fizer, vai dar erro no carrinho e vai dar merda)
+    await Cart.updateMany(
+        { "products.product": _id },
+        { $pull: { products: { product: _id } } }
+      );
+    res.status(204).json({})
+
+  } catch(errors) {
+    console.error(errors)    
+    res.status(500).send("Error deleting product")
   }
 }
 
-async function handlePutRequest(req, res) {
-
-}

@@ -1,16 +1,15 @@
 import { Header, Accordion, Label, Segment, Icon, Button, List, Image } from "semantic-ui-react";
 import { useRouter } from "next/router";
+import formatDate from "../../utils/formatDate";
 
 function AccountOrders({orders}) {
   const router = useRouter();
 
   function mapOrdersToPanels(orders) {
-    console.log(orders)
-
     return orders.map(order=> ({
       key: order._id,
       title: {
-        content: <Label color="blue" content={order.createdAt} />
+        content: <Label color="blue" content={formatDate(order.createdAt)} />
       },
       content: {
         content: (
@@ -27,7 +26,7 @@ function AccountOrders({orders}) {
           </List.Header>
           <List>
           {order.products.map(item => (
-            <List.Item>
+            <List.Item key={item._id}>
               <Image avatar src={item.product.mediaUrl} />
               <List.Content>
                 <List.Header>{item.name}</List.Header>

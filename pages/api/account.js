@@ -5,7 +5,15 @@ import { destroyCookie } from "nookies"
 
 connectDb();
 
-export default async (req, res) => {
+async function handlePutRequest(req, res) {
+  const { _id, role }  = req.body;
+  const filter = { _id }
+  const udpate = { role }
+  await User.findOneAndUpdate(filter, udpate)
+  res.status(203).json({ success: "true", msg: "User updated"})
+}
+
+async function handleGetRequest(req, res) {
   if (!("authorization" in req.headers)) {
     return res.status(401).send("No authorization token");
   }
@@ -23,4 +31,21 @@ export default async (req, res) => {
    } catch(error) {
     res.status(403).json({ success: false, msg: "Invalid token" })
   }
+}
+
+export default async (req, res) => {
+  switch(req.method) {
+    case "GET":
+      await handleGetRequest(req, res);
+      break;
+
+    case "PUT":
+      await handlePutRequest(req, res);
+      break;
+
+    default:
+      res.status(405).send(`Method ${req.method} not allowed`)
+      break;
+  }
+
 }

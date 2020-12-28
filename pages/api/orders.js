@@ -6,7 +6,11 @@ connectDb()
 export default async (req, res) => {
   try {
     const { userId } = jwt.verify(req.headers.authorization, process.env.JWT_SECRET)
-    const orders = await Order.find({ userId: userId }).populate({
+    const orders = await Order.find({ userId: userId })
+    .sort({
+      createdAt: "asc"
+    })
+    .populate({
       path: "products.product",
       model: "Product"
     })
